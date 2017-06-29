@@ -11,6 +11,7 @@ namespace PanstwaMiasta.Core.Repositories
         Task<Room> GetAsync(Guid roomId);
         Task<IEnumerable<Room>> GetAllAsync();
         Task AddAsync(Room room);
+        Task UpdateAsync(Room room);
         Task RemoveAsync(Room room);
     }
 }

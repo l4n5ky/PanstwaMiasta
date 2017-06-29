@@ -23,5 +23,15 @@ namespace PanstwaMiasta.Core.Models
             Id = id;
             _players.Add(player);
         }
+
+        public void AddPlayer(Player player)
+        {
+            _players.Add(player);
+        }
+
+        public void DeletePlayer(Player player)
+        {
+            _players.Remove(player);
+        }
     }
 }

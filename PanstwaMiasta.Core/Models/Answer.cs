@@ -32,7 +32,7 @@ namespace PanstwaMiasta.Core.Models
         {
             if (string.IsNullOrWhiteSpace(value))
             {
-                throw new Exception("Value can not be empty.");
+                Value = null;
             }
             if (Value == value)
             {
