@@ -20,6 +20,10 @@ namespace PanstwaMiasta.Infrastructure.Modules
             builder.RegisterType<Encrypter>()
                    .As<IEncrypter>()
                    .SingleInstance();
+
+            builder.RegisterType<JwtHandler>()
+                   .As<IJwtHandler>()
+                   .SingleInstance();
         }
     }
 }

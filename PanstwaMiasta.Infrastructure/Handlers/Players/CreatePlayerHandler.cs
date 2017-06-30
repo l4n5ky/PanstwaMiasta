@@ -2,8 +2,6 @@
 using PanstwaMiasta.Infrastructure.Commands.Players;
 using PanstwaMiasta.Infrastructure.Services;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace PanstwaMiasta.Infrastructure.Handlers.Players

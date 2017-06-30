@@ -1,11 +1,15 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using PanstwaMiasta.Infrastructure.Commands;
 
 namespace PanstwaMiasta.Api.Controllers
 {
-    [Route("api/[controller]")]
-    public class ValuesController : Controller
+    public class ValuesController : BaseController
     {
+        public ValuesController(ICommandDispatcher commandDispatcher) : base(commandDispatcher)
+        {
+        }
+
         // GET api/values
         [HttpGet]
         public IEnumerable<string> Get()

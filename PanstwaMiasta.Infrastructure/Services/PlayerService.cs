@@ -54,7 +54,7 @@ namespace PanstwaMiasta.Infrastructure.Services
             var salt = _encrypter.GetSalt(password);
             var hash = _encrypter.GetHash(password, salt);
 
-            player = new Player(id, nickname, password, salt);
+            player = new Player(id, nickname, hash, salt);
             await _playerRepository.AddAsync(player);
         }
 

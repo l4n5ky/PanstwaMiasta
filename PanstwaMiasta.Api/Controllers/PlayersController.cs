@@ -1,28 +1,35 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 using PanstwaMiasta.Infrastructure.Commands;
 using PanstwaMiasta.Infrastructure.Commands.Players;
 using PanstwaMiasta.Infrastructure.DTO;
+using PanstwaMiasta.Infrastructure.Extensions;
 using PanstwaMiasta.Infrastructure.Services;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace PanstwaMiasta.Api.Controllers
 {
-    [Route("[controller]")]
-    public class PlayersController : Controller
+    public class PlayersController : BaseController
     {
-        private readonly ICommandDispatcher CommandDispatcher;
         private readonly IPlayerService _playerService;
+        private readonly IMemoryCache _cache;
 
-        public PlayersController(ICommandDispatcher dispatcher, IPlayerService playerService)
+        public PlayersController(ICommandDispatcher commandDispatcher,
+                IPlayerService playerService, IMemoryCache cache) : base(commandDispatcher)
         {
-            CommandDispatcher = dispatcher;
             _playerService = playerService;
+            _cache = cache;
         }
 
-        [HttpGet("")]
+        [HttpGet]
         public async Task<IEnumerable<PlayerDto>> GetAll()
-            => await _playerService.BrowseAsync();
+        {
+            var players = await _playerService.BrowseAsync();
+
+            return players;
+        }
 
         [HttpGet("{nickname}")]
         public async Task<IActionResult> Get(string nickname)
@@ -30,18 +37,28 @@ namespace PanstwaMiasta.Api.Controllers
             var player = await _playerService.GetAsync(nickname);
             if (player == null)
             {
-                return NotFound();
+                return Json("any data");
             }
 
             return Json(player);
         }
 
-        [HttpPost]
+        [HttpPost("register")]
         public async Task<IActionResult> Post([FromBody]CreatePlayer command)
         {
-            await CommandDispatcher.DispatchAsync(command);
+            await DispatchAsync(command);
 
             return Created($"players/{command.Nickname}", null);
+        }
+
+        [HttpPost("login")]
+        public async Task<IActionResult> Post([FromBody]Login command)
+        {
+            command.TokenId = Guid.NewGuid();
+            await DispatchAsync(command);
+            var jwt = _cache.GetJwt(command.TokenId);
+
+            return Json(jwt);
         }
     }
 }
