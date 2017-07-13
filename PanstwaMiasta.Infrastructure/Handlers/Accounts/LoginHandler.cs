@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
 using PanstwaMiasta.Infrastructure.Commands;
-using PanstwaMiasta.Infrastructure.Commands.Players;
+using PanstwaMiasta.Infrastructure.Commands.Accounts;
 using PanstwaMiasta.Infrastructure.Extensions;
 using PanstwaMiasta.Infrastructure.Services;
 using System.Threading.Tasks;

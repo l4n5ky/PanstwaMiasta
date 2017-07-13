@@ -12,5 +12,6 @@ namespace PanstwaMiasta.Infrastructure.Services
         Task<IEnumerable<PlayerDto>> BrowseAsync();
         Task RegisterAsync(Guid id, string nickname, string password);
         Task LoginAsync(string nickname, string password);
+        Task UpdateAsync(Guid id, string password, string newPassword);
     }
 }

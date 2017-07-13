@@ -3,9 +3,7 @@ using Microsoft.Extensions.Caching.Memory;
 using PanstwaMiasta.Infrastructure.Commands;
 using PanstwaMiasta.Infrastructure.Commands.Players;
 using PanstwaMiasta.Infrastructure.DTO;
-using PanstwaMiasta.Infrastructure.Extensions;
 using PanstwaMiasta.Infrastructure.Services;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -41,24 +39,6 @@ namespace PanstwaMiasta.Api.Controllers
             }
 
             return Json(player);
-        }
-
-        [HttpPost("register")]
-        public async Task<IActionResult> Post([FromBody]CreatePlayer command)
-        {
-            await DispatchAsync(command);
-
-            return Created($"players/{command.Nickname}", null);
-        }
-
-        [HttpPost("login")]
-        public async Task<IActionResult> Post([FromBody]Login command)
-        {
-            command.TokenId = Guid.NewGuid();
-            await DispatchAsync(command);
-            var jwt = _cache.GetJwt(command.TokenId);
-
-            return Json(jwt);
         }
     }
 }

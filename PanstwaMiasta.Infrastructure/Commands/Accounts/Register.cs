@@ -1,6 +1,6 @@
-﻿namespace PanstwaMiasta.Infrastructure.Commands.Players
+﻿namespace PanstwaMiasta.Infrastructure.Commands.Accounts
 {
-    public class CreatePlayer : ICommand
+    public class Register : ICommand
     {
         public string Nickname { get; set; }
         public string Password { get; set; }

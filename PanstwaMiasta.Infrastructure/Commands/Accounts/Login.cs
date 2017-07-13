@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace PanstwaMiasta.Infrastructure.Commands.Players
+namespace PanstwaMiasta.Infrastructure.Commands.Accounts
 {
     public class Login : ICommand
     {

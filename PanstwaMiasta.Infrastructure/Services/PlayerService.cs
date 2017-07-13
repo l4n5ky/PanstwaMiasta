@@ -74,5 +74,28 @@ namespace PanstwaMiasta.Infrastructure.Services
 
             throw new Exception("Invalid credentials.");
         }
+
+        public async Task UpdateAsync(Guid id, string password, string newPassword)
+        {
+            var player = await _playerRepository.GetAsync(id);
+            if (player == null)
+            {
+                throw new Exception($"Player with id : {id} does not exists.");
+            }
+            if (password == newPassword)
+            {
+                return;
+            }
+
+            var hash = _encrypter.GetHash(password, player.Salt);
+            if (player.Password != hash)
+            {
+                throw new Exception("Invalid credentials.");
+            }
+
+            var newSalt = _encrypter.GetSalt(newPassword);
+            var newHash = _encrypter.GetHash(newPassword, newSalt);
+            player.SetPassword(newHash, newSalt);
+        }
     }
 }
