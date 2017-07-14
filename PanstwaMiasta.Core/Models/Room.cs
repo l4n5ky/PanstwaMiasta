@@ -4,7 +4,6 @@ using System.Linq;
 
 namespace PanstwaMiasta.Core.Models
 {
-    // 3
     public class Room
     {
         private ISet<Player> _players = new HashSet<Player>();
@@ -18,10 +17,9 @@ namespace PanstwaMiasta.Core.Models
             set { _players = new HashSet<Player>(value); }
         }
 
-        public Room(Guid id, Player player)
+        public Room(Guid id)
         {
             Id = id;
-            _players.Add(player);
         }
 
         public void AddPlayer(Player player)

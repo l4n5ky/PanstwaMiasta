@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PanstwaMiasta.Infrastructure.Commands;
+using System;
 using System.Threading.Tasks;
 
 namespace PanstwaMiasta.Api.Controllers
@@ -8,6 +9,8 @@ namespace PanstwaMiasta.Api.Controllers
     public abstract class BaseController : Controller
     {
         private readonly ICommandDispatcher CommandDispatcher;
+        protected Guid PlayerId => User?.Identity?.IsAuthenticated == true ?
+            Guid.Parse(User.Identity.Name) : Guid.Empty;
 
         protected BaseController(ICommandDispatcher commandDispatcher)
         {
@@ -16,6 +19,11 @@ namespace PanstwaMiasta.Api.Controllers
 
         protected async Task DispatchAsync<T>(T command) where T : ICommand
         {
+            if (command is IAuthenticatedCommand authenticatedCommand)
+            {
+                authenticatedCommand.Id = PlayerId;
+            }
+
             await CommandDispatcher.DispatchAsync(command);
         }
     }

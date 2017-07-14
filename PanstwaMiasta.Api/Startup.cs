@@ -7,7 +7,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
+using PanstwaMiasta.Api.Framework;
 using PanstwaMiasta.Infrastructure.Modules;
+using PanstwaMiasta.Infrastructure.Mongo;
+using PanstwaMiasta.Infrastructure.Settings;
 using System;
 using System.Text;
 
@@ -38,7 +41,7 @@ namespace PanstwaMiasta.Api
 
             var builder = new ContainerBuilder();
             builder.Populate(services);
-            builder.RegisterModule(new ContainerModule());
+            builder.RegisterModule(new ContainerModule(Configuration));
             ApplicationContainer = builder.Build();
 
             return new AutofacServiceProvider(ApplicationContainer);
@@ -51,17 +54,22 @@ namespace PanstwaMiasta.Api
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
+            var jwtSettings = app.ApplicationServices.GetService<JwtSettings>();
+
             app.UseJwtBearerAuthentication(new JwtBearerOptions
             {
                 AutomaticAuthenticate = true,
                 TokenValidationParameters = new TokenValidationParameters
                 {
-                    ValidIssuer = "http://localhost:5000",
+                    ValidIssuer = jwtSettings.Issuer,
                     ValidateAudience = false,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("super_secret_key_123"))
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Key))
                 }
             });
 
+            MongoConfigurator.Initialize();
+
+            app.UseMiddleware(typeof(ExceptionHandler));
             app.UseMvc();
             appLifetime.ApplicationStopped.Register(() => ApplicationContainer.Dispose());
         }

@@ -5,13 +5,12 @@ using System.Threading.Tasks;
 
 namespace PanstwaMiasta.Core.Repositories
 {
-    // 5
     public interface IRoomRepository : IRepository
     {
+        Task CreateAsync();
         Task<Room> GetAsync(Guid roomId);
         Task<IEnumerable<Room>> GetAllAsync();
-        Task AddAsync(Room room);
-        Task UpdateAsync(Room room);
-        Task RemoveAsync(Room room);
+        Task AddMemberAsync(Player player);
+        Task RemoveMemberAsync(Player player);
     }
 }

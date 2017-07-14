@@ -1,9 +1,9 @@
-﻿using System;
+﻿using PanstwaMiasta.Core.Exceptions;
+using System;
 using System.Collections.Generic;
 
 namespace PanstwaMiasta.Core.Models
 {
-    // 1
     public class Player
     {
         private ISet<Answer> _answers = new HashSet<Answer>();
@@ -32,11 +32,11 @@ namespace PanstwaMiasta.Core.Models
         {
             if (string.IsNullOrWhiteSpace(nickname))
             {
-                throw new Exception("Nickname can not be empty.");
+                throw new DomainException(ErrorCodes.InvalidUsername, "Nickname can not be empty.");
             }
             if (nickname.Length > 20 || nickname.Length < 6)
             {
-                throw new Exception("Nickname must contain between 6 and 20 characters.");
+                throw new DomainException(ErrorCodes.InvalidUsername, "Nickname must contain between 6 and 20 characters.");
             }
             if (Nickname == nickname)
             {
@@ -50,11 +50,11 @@ namespace PanstwaMiasta.Core.Models
         {
             if (string.IsNullOrEmpty(password))
             {
-                throw new Exception("Password can not be empty.");
+                throw new DomainException(ErrorCodes.InvalidPassword, "Password can not be empty.");
             }
             if (password.Length > 100 || password.Length < 6)
             {
-                throw new Exception("Password must contain between 6 and 20 characters.");
+                throw new DomainException(ErrorCodes.InvalidPassword, "Password must contain between 6 and 20 characters.");
             }
             if (Password == password)
             {
@@ -62,7 +62,7 @@ namespace PanstwaMiasta.Core.Models
             }
             if (string.IsNullOrEmpty(salt))
             {
-                throw new Exception("Salt can not be empty.");
+                throw new DomainException(ErrorCodes.InvalidPassword, "Salt can not be empty.");
             }
 
             Password = password;

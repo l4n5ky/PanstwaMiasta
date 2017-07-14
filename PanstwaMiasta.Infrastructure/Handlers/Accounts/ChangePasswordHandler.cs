@@ -1,9 +1,6 @@
 ﻿using PanstwaMiasta.Infrastructure.Commands;
 using PanstwaMiasta.Infrastructure.Commands.Accounts;
 using PanstwaMiasta.Infrastructure.Services;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace PanstwaMiasta.Infrastructure.Handlers.Accounts

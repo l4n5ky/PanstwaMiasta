@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using PanstwaMiasta.Infrastructure.Commands;
 using PanstwaMiasta.Infrastructure.Commands.Accounts;
@@ -36,12 +37,10 @@ namespace PanstwaMiasta.Api.Controllers
             return Json(jwt);
         }
 
-        [HttpPut("update/{id:guid}")]
+        [Authorize] // tofix: authorization from identity
+        [HttpPut("update")]
         public async Task<IActionResult> Put([FromBody]ChangePassword command)
         {
-            var guid = RouteData.Values["id"];
-            command.Id = new Guid(guid.ToString());
-            
             await DispatchAsync(command);
 
             return Ok();

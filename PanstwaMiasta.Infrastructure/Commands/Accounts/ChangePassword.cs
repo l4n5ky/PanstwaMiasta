@@ -1,10 +1,7 @@
-﻿using System;
-
-namespace PanstwaMiasta.Infrastructure.Commands.Accounts
+﻿namespace PanstwaMiasta.Infrastructure.Commands.Accounts
 {
-    public class ChangePassword : ICommand
+    public class ChangePassword : AuthenticatedCommandBase
     {
-        public Guid Id { get; set; }
         public string Password { get; set; }
         public string NewPassword { get; set; }
     }

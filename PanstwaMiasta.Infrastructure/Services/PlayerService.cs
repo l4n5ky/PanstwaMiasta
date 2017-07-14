@@ -2,6 +2,7 @@
 using PanstwaMiasta.Core.Models;
 using PanstwaMiasta.Core.Repositories;
 using PanstwaMiasta.Infrastructure.DTO;
+using PanstwaMiasta.Infrastructure.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -48,7 +49,7 @@ namespace PanstwaMiasta.Infrastructure.Services
             var player = await _playerRepository.GetAsync(nickname);
             if (player != null)
             {
-                throw new Exception("User with this nickname already exists.");
+                throw new ServiceException(ErrorCodes.UserExist,"User with this nickname already exists.");
             }
 
             var salt = _encrypter.GetSalt(password);
@@ -63,7 +64,7 @@ namespace PanstwaMiasta.Infrastructure.Services
             var player = await _playerRepository.GetAsync(nickname);
             if (player == null)
             {
-                throw new Exception("Invalid credentials.");
+                throw new ServiceException(ErrorCodes.InvalidCredentials, "Invalid credentials.");
             }
 
             var hash = _encrypter.GetHash(password, player.Salt);
@@ -72,7 +73,7 @@ namespace PanstwaMiasta.Infrastructure.Services
                 return;
             }
 
-            throw new Exception("Invalid credentials.");
+            throw new ServiceException(ErrorCodes.InvalidCredentials, "Invalid credentials.");
         }
 
         public async Task UpdateAsync(Guid id, string password, string newPassword)
@@ -80,7 +81,7 @@ namespace PanstwaMiasta.Infrastructure.Services
             var player = await _playerRepository.GetAsync(id);
             if (player == null)
             {
-                throw new Exception($"Player with id : {id} does not exists.");
+                throw new ServiceException(ErrorCodes.UserNotFound, $"Player with id : {id} does not exists.");
             }
             if (password == newPassword)
             {
@@ -90,7 +91,7 @@ namespace PanstwaMiasta.Infrastructure.Services
             var hash = _encrypter.GetHash(password, player.Salt);
             if (player.Password != hash)
             {
-                throw new Exception("Invalid credentials.");
+                throw new ServiceException(ErrorCodes.InvalidCredentials, "Invalid credentials.");
             }
 
             var newSalt = _encrypter.GetSalt(newPassword);

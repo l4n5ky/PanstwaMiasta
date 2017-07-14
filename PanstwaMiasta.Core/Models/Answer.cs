@@ -2,7 +2,6 @@
 
 namespace PanstwaMiasta.Core.Models
 {
-    // 2
     public class Answer
     {
         public string Category { get; protected set; }

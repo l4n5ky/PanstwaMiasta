@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using PanstwaMiasta.Infrastructure.Commands;
-using PanstwaMiasta.Infrastructure.Commands.Players;
 using PanstwaMiasta.Infrastructure.DTO;
 using PanstwaMiasta.Infrastructure.Services;
 using System.Collections.Generic;
@@ -33,9 +32,10 @@ namespace PanstwaMiasta.Api.Controllers
         public async Task<IActionResult> Get(string nickname)
         {
             var player = await _playerService.GetAsync(nickname);
-            if (player == null)
+
+            if(player == null)
             {
-                return Json("any data");
+                return NotFound();
             }
 
             return Json(player);
