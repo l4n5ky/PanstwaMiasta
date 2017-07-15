@@ -3,7 +3,6 @@ using System.Collections.Generic;
 
 namespace PanstwaMiasta.Infrastructure.DTO
 {
-    // 8
     public class RoomDto
     {
         public Guid Id { get; set; }

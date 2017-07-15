@@ -10,6 +10,7 @@ namespace PanstwaMiasta.Infrastructure.Mappers
             => new MapperConfiguration(cfg =>
             {
                 cfg.CreateMap<Player, PlayerDto>();
+                cfg.CreateMap<Room, RoomDto>();
             })
             .CreateMapper();
     }

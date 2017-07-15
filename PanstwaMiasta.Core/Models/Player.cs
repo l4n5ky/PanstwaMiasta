@@ -6,17 +6,17 @@ namespace PanstwaMiasta.Core.Models
 {
     public class Player
     {
-        private ISet<Answer> _answers = new HashSet<Answer>();
+        private IDictionary<string, string> _answers = new Dictionary<string, string>();
 
         public Guid Id { get; protected set; }
         public string Nickname { get; protected set; }
         public string Password { get; protected set; }
         public string Salt { get; protected set; }
         public DateTime CreatedAt { get; protected set; }
-        public IEnumerable<Answer> Answers
+        public IDictionary<string, string> Answers
         {
             get { return _answers; }
-            set { _answers = new HashSet<Answer>(value); }
+            set { _answers = new Dictionary<string, string>(value); }
         }
 
         public Player(Guid id, string nickname, string password, string salt)
@@ -24,7 +24,6 @@ namespace PanstwaMiasta.Core.Models
             Id = id;
             SetNickname(nickname);
             SetPassword(password, salt);
-
             CreatedAt = DateTime.UtcNow;
         }
 
@@ -68,6 +67,5 @@ namespace PanstwaMiasta.Core.Models
             Password = password;
             Salt = salt;
         }
-
     }
 }
