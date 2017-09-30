@@ -1,37 +1,41 @@
-﻿using MongoDB.Driver;
-using MongoDB.Driver.Linq;
+﻿using Microsoft.EntityFrameworkCore;
 using PanstwaMiasta.Core.Models;
 using PanstwaMiasta.Core.Repositories;
+using PanstwaMiasta.Infrastructure.EF;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace PanstwaMiasta.Infrastructure.Repositories
 {
-    public class PlayerRepository : IPlayerRepository, IMongoRepository
+    public class PlayerRepository : IPlayerRepository, ISqlRepository
     {
-        private readonly IMongoDatabase _database;
+        private readonly PMContext _context;
 
-        public PlayerRepository(IMongoDatabase database)
+        public PlayerRepository(PMContext context)
         {
-            _database = database;
+            _context = context;
         }
 
         public async Task AddAsync(Player player)
-            => await Players.InsertOneAsync(player);
-
-        public async Task<Player> GetAsync(Guid id)
-            => await Players.AsQueryable().FirstOrDefaultAsync(x => x.Id == id);
-
-        public async Task<Player> GetAsync(string nickname)
-            => await Players.AsQueryable().FirstOrDefaultAsync(x => x.Nickname == nickname);
+        {
+            await _context.AddAsync(player);
+            await _context.SaveChangesAsync();
+        }
 
         public async Task<IEnumerable<Player>> GetAllAsync()
-            => await Players.AsQueryable().ToListAsync();
+            => await _context.Players.ToListAsync();
+
+        public async Task<Player> GetAsync(Guid id)
+            => await _context.Players.SingleOrDefaultAsync(x => x.Id == id);
+
+        public async Task<Player> GetAsync(string nickname)
+            => await _context.Players.SingleOrDefaultAsync(x => x.Nickname == nickname);
 
         public async Task UpdateAsync(Player player)
-            => await Players.ReplaceOneAsync(x => x.Id == player.Id, player);
-
-        private IMongoCollection<Player> Players => _database.GetCollection<Player>("Players");
+        {
+            _context.Players.Update(player);
+            await _context.SaveChangesAsync();
+        }
     }
 }

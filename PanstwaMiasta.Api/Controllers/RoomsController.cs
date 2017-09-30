@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using PanstwaMiasta.Core.Models;
 using PanstwaMiasta.Infrastructure.Commands;
 using PanstwaMiasta.Infrastructure.Commands.Rooms;
 using PanstwaMiasta.Infrastructure.DTO;
@@ -37,11 +38,35 @@ namespace PanstwaMiasta.Api.Controllers
             return room;
         }
 
-        [HttpPost("{id}/join")]
+        [HttpPost("create")]
+        public async Task Post([FromBody]CreateRoom command)
+        {
+            await DispatchAsync(command);
+        }
+
+        [HttpDelete("delete")]
+        public async Task Delete([FromBody]DeleteRoom command)
+        {
+            await DispatchAsync(command);
+        }
+        
+        [HttpPost("join")]
         public async Task Post([FromBody]JoinRoom command)
         {
-            command.RoomId = new Guid(RouteData.Values["id"].ToString());
             await DispatchAsync(command);
+        }
+
+        [HttpPost("leave")]
+        public async Task Post([FromBody]LeaveRoom command)
+        {
+            await DispatchAsync(command);
+        }
+
+        [HttpPost("start")]
+        public async Task Post([FromBody]StartGame command)
+        {
+            await DispatchAsync(command);
+            //Redirect("{api}/game/start");
         }
     }
 }

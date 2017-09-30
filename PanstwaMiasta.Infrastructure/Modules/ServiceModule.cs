@@ -24,6 +24,10 @@ namespace PanstwaMiasta.Infrastructure.Modules
             builder.RegisterType<JwtHandler>()
                    .As<IJwtHandler>()
                    .SingleInstance();
+
+            builder.RegisterType<PushSender>()
+                   .As<IPushSender>()
+                   .SingleInstance();
         }
     }
 }

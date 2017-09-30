@@ -2,8 +2,8 @@
 
 namespace PanstwaMiasta.Infrastructure.Commands.Rooms
 {
-    public class CreateRoom : ICommand
+    public class StartGame : ICommand
     {
-        public Guid RoomAdminId { get; set; }
+        public Guid RoomId { get; set; }
     }
 }

@@ -23,7 +23,7 @@ namespace PanstwaMiasta.Infrastructure.Handlers.Players
 
         public async Task HandleAsync(Login command)
         {
-            await _playerService.LoginAsync(command.Nickname, command.Password);
+            await _playerService.LoginAsync(command.Nickname, command.Password, command.DeviceId);
             var player = await _playerService.GetAsync(command.Nickname);
             var jwt = _jwtHandler.CreateToken(player.Id);
             _cache.SetJwt(command.TokenId, jwt);

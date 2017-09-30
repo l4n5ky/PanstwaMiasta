@@ -9,7 +9,7 @@ namespace PanstwaMiasta.Api.Controllers
     public abstract class BaseController : Controller
     {
         private readonly ICommandDispatcher CommandDispatcher;
-        protected Guid PlayerId => User?.Identity?.IsAuthenticated == true ?
+        protected Guid UserId => User?.Identity?.IsAuthenticated == true ?
             Guid.Parse(User.Identity.Name) : Guid.Empty;
 
         protected BaseController(ICommandDispatcher commandDispatcher)
@@ -21,7 +21,7 @@ namespace PanstwaMiasta.Api.Controllers
         {
             if (command is IAuthenticatedCommand authenticatedCommand)
             {
-                authenticatedCommand.Id = PlayerId;
+                authenticatedCommand.Id = UserId;
             }
 
             await CommandDispatcher.DispatchAsync(command);

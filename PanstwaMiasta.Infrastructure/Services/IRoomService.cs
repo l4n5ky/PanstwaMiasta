@@ -9,6 +9,8 @@ namespace PanstwaMiasta.Infrastructure.Services
     {
         Task<RoomDto> GetAsync(Guid roomId);
         Task<IEnumerable<RoomDto>> BrowseAsync();
+        Task CreateAsync(Guid playerId);
+        Task DeleteAsync(Guid roomId);
         Task AddMemberAsync(Guid playerId, Guid roomId);
         Task RemoveMemberAsync(Guid playerId, Guid roomId);
     }

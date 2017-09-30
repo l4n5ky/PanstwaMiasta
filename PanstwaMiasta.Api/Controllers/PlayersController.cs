@@ -11,13 +11,11 @@ namespace PanstwaMiasta.Api.Controllers
     public class PlayersController : BaseController
     {
         private readonly IPlayerService _playerService;
-        private readonly IMemoryCache _cache;
 
         public PlayersController(ICommandDispatcher commandDispatcher,
                 IPlayerService playerService, IMemoryCache cache) : base(commandDispatcher)
         {
             _playerService = playerService;
-            _cache = cache;
         }
 
         [HttpGet]

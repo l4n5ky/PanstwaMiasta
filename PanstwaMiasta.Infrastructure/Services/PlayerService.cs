@@ -13,7 +13,7 @@ namespace PanstwaMiasta.Infrastructure.Services
     {
         private readonly IPlayerRepository _playerRepository;
         private readonly IEncrypter _encrypter;
-        private readonly IMapper _mapper; // automapper library
+        private readonly IMapper _mapper;
 
         public PlayerService(IPlayerRepository playerRepository,
             IEncrypter encrypter, IMapper mapper)
@@ -59,12 +59,18 @@ namespace PanstwaMiasta.Infrastructure.Services
             await _playerRepository.AddAsync(player);
         }
 
-        public async Task LoginAsync(string nickname, string password)
+        public async Task LoginAsync(string nickname, string password, string deviceId)
         {
             var player = await _playerRepository.GetAsync(nickname);
             if (player == null)
             {
                 throw new ServiceException(ErrorCodes.InvalidCredentials, "Invalid credentials.");
+            }
+
+            if (player.DeviceId != deviceId && deviceId != null)
+            {
+                player.SetDeviceId(deviceId);
+                await _playerRepository.UpdateAsync(player);
             }
 
             var hash = _encrypter.GetHash(password, player.Salt);
@@ -97,6 +103,7 @@ namespace PanstwaMiasta.Infrastructure.Services
             var newSalt = _encrypter.GetSalt(newPassword);
             var newHash = _encrypter.GetHash(newPassword, newSalt);
             player.SetPassword(newHash, newSalt);
+            await _playerRepository.UpdateAsync(player);
         }
     }
 }

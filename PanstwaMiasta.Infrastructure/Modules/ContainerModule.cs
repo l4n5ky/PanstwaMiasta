@@ -18,7 +18,6 @@ namespace PanstwaMiasta.Infrastructure.Modules
             builder.RegisterInstance(AutoMapperConfig.Initialize()).SingleInstance();
             builder.RegisterModule<CommandModule>();
             builder.RegisterModule<RepositoryModule>();
-            builder.RegisterModule<MongoModule>();
             builder.RegisterModule<ServiceModule>();
             builder.RegisterModule(new SettingsModule(_configuration));
         }

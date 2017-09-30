@@ -6,30 +6,44 @@ namespace PanstwaMiasta.Core.Models
 {
     public class Room
     {
-        private ISet<Player> _players = new HashSet<Player>();
+        private IList<Player> _players = new List<Player>();
+
+        public int Number { get; set; }
+        public bool IsActive { get; set; }
+        public Guid RoomAdminId { get; set; }
 
         public Guid Id { get; protected set; }
-        public bool IsActive => _players.Any();
-
         public IEnumerable<Player> Players
         {
             get { return _players; }
-            set { _players = new HashSet<Player>(value); }
+            set { _players = new List<Player>(value); }
         }
 
-        public Room(Guid id)
+        public Room(Guid id, Guid adminId)
         {
             Id = id;
+            RoomAdminId = adminId;
+            IsActive = true;
         }
 
         public void AddPlayer(Player player)
         {
+            var member = _players.FirstOrDefault(x => x.Id == player.Id);
+
+            if (member != null)
+                return;
+
             _players.Add(player);
         }
 
         public void DeletePlayer(Player player)
         {
-            _players.Remove(player);
+            var member = _players.FirstOrDefault(x => x.Id == player.Id);
+
+            if (member == null)
+                return;
+
+            _players.Remove(member);
         }
     }
 }

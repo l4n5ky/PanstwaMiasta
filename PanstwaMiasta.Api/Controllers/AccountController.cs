@@ -37,7 +37,7 @@ namespace PanstwaMiasta.Api.Controllers
             return Json(jwt);
         }
 
-        [Authorize] // tofix: authorization from identity
+        [Authorize]
         [HttpPut("update")]
         public async Task<IActionResult> Put([FromBody]ChangePassword command)
         {

@@ -1,7 +1,6 @@
 ﻿using Autofac;
 using Microsoft.Extensions.Configuration;
 using PanstwaMiasta.Infrastructure.Extensions;
-using PanstwaMiasta.Infrastructure.Mongo;
 using PanstwaMiasta.Infrastructure.Settings;
 
 namespace PanstwaMiasta.Infrastructure.Modules
@@ -18,8 +17,6 @@ namespace PanstwaMiasta.Infrastructure.Modules
         protected override void Load(ContainerBuilder builder)
         {
             builder.RegisterInstance(_configuration.GetSettings<JwtSettings>())
-                   .SingleInstance();
-            builder.RegisterInstance(_configuration.GetSettings<MongoSettings>())
                    .SingleInstance();
         }
     }

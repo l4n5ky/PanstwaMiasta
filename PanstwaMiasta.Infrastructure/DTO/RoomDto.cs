@@ -5,8 +5,10 @@ namespace PanstwaMiasta.Infrastructure.DTO
 {
     public class RoomDto
     {
-        public Guid Id { get; set; }
+        public int Number { get; set; }
         public bool IsActive { get; set; }
+        public Guid Id { get; set; }
         public IEnumerable<PlayerDto> Players { get; set; }
+        public Guid RoomAdminId { get; set; }
     }
 }

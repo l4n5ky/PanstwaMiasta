@@ -8,8 +8,8 @@ using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using PanstwaMiasta.Api.Framework;
+using PanstwaMiasta.Infrastructure.EF;
 using PanstwaMiasta.Infrastructure.Modules;
-using PanstwaMiasta.Infrastructure.Mongo;
 using PanstwaMiasta.Infrastructure.Settings;
 using System;
 using System.Text;
@@ -39,6 +39,9 @@ namespace PanstwaMiasta.Api
             services.AddMvc()
                     .AddJsonOptions(x => x.SerializerSettings.Formatting = Formatting.Indented);
 
+            services.AddEntityFrameworkSqlServer()
+                    .AddDbContext<PMContext>();
+
             var builder = new ContainerBuilder();
             builder.Populate(services);
             builder.RegisterModule(new ContainerModule(Configuration));
@@ -66,8 +69,6 @@ namespace PanstwaMiasta.Api
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Key))
                 }
             });
-
-            MongoConfigurator.Initialize();
 
             app.UseMiddleware(typeof(ExceptionHandler));
             app.UseMvc();
